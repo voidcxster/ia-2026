@@ -2,3 +2,13 @@
     border-radius: 15%;
     box-shadow: 10px 5px 5px black;
 }
+
+.cardTitle {
+  font-size: 50px;
+  color: white;
+}
+
+.cardEllipseButton {
+  color: red;
+  height: 900px;
+}

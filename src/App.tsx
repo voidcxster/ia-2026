@@ -1,16 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 import {Card} from './Card.tsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  const cards: string[] = ["Spanish 300", "Chemistry", "History HL"]
 
   return (
-      <>
-        <Card name="Spanish 100"/>
-      </>
+    <>
+      {
+        cards.map(n => (
+          <Card name={n}/>
+        ))
+      }
+    </>
   )
 }
 
