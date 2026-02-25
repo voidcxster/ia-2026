@@ -1,9 +1,11 @@
 import './Card.css'
 import { Ellipses } from './icons/Ellipses.tsx'
+import { useNavigate } from 'react-router';
 
 export function Card({name}: {name: string}) {
+  const navigate = useNavigate();
   function redirect() {
-    window.location.assign("./Quiz.tsx")
+    navigate("./Quiz.tsx");
   }
 
   return (
