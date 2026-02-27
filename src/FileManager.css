@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.gridWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}

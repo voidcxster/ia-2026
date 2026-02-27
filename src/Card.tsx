@@ -2,10 +2,10 @@ import './Card.css'
 import { Ellipses } from './icons/Ellipses.tsx'
 import { useNavigate } from 'react-router';
 
-export function Card({name}: {name: string}) {
+export function Card({name, link}: {name: string, link: string}) {
   const navigate = useNavigate();
   function redirect() {
-    navigate("./Quiz.tsx");
+    navigate(link);
   }
 
   return (
