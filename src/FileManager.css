@@ -45,3 +45,12 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
+
+#fileTree {
+  position: sticky;
+  /* top: 0px;
+  left: 0px; */
+  height: 100%;
+  background: gray;
+  width: 200px;
+}
