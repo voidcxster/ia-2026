@@ -6,12 +6,21 @@
   width: 100vw;
 }
 
-.root {
+.flexWrapper {
   display: flex;
-  align-items: anchor-center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .flashcard {
   height: 50vh;
   width: 80vw;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flashcardTitle {
+  text-align: center;
 }
