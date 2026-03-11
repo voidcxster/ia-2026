@@ -1,7 +1,10 @@
+import "./Quiz.css"
+
 export function Quiz() {
   return (
     <>
-      <h1>Spanish 300</h1>
+      <h1 className="quizTitle">Spanish 300</h1>
+      <div className="card flashcard"></div>
     </>
   )
 }

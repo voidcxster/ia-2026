@@ -1,8 +1,7 @@
-.card {
-  border-radius: 15%;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
+.contentCard {
+  padding: 2em;
   aspect-ratio: 1 / 1;
-  background: #353535;
+  aspect-ratio: 1 / 1;
   margin: 10px;
 }
 

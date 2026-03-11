@@ -1,0 +1,17 @@
+#root {
+  display: block;
+}
+
+.quizTitle {
+  width: 100vw;
+}
+
+.root {
+  display: flex;
+  align-items: anchor-center;
+}
+
+.flashcard {
+  height: 50vh;
+  width: 80vw;
+}

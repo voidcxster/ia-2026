@@ -9,7 +9,7 @@ export function Card({name, link}: {name: string, link: string}) {
   }
 
   return (
-    <div className="card" onClick={redirect}>
+    <div className="card contentCard" onClick={redirect}>
     {//<img src={ellipses} /* style={{ color:"red" }} */ className="cardEllipseButton" alt="More options."/>
     }
       <Ellipses />
