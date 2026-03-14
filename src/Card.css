@@ -1,8 +1,12 @@
 .contentCard {
   padding: 2em;
   aspect-ratio: 1 / 1;
-  aspect-ratio: 1 / 1;
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* display: flex; */
 }
 
 .cardTitle {
@@ -11,6 +15,6 @@
 }
 
 .cardEllipseButton {
-  color: red;
-  height: 900px;
+  position: relative;
+  top: 0;
 }
