@@ -16,7 +16,12 @@ export function FileManager() {
         <li>
           {
             cards.map((n, i) => (
-              <ol className="fileTreeLeaf" key={i} onClick={() => moveFile(/*url*/)}>{n}</ol>
+              <ol
+              className="fileTreeLeaf"
+              key={i}
+              onClick={() => moveFile(/*url*/)}>
+                {n}
+              </ol>
             ))
           }
         </li>
