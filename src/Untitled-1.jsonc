@@ -1,0 +1,25 @@
+{
+    "settings" : {
+        "darkMode": true,
+    },
+    "folders": [
+        {
+            "title": "Spanish 300",
+            "contents": [ 
+                "key",
+                {
+                    "title": "Preterito",
+                    "contents": [],
+                }
+            ],
+        }
+    ],
+    "cardSets": {
+        "key": {
+            "title": "test",
+            "cards": {
+                "question": "answer"
+            }
+        }
+    }
+}
