@@ -20,6 +20,7 @@
   height: 100vh;
   background: gray;
   width: 15vw;
+  z-index: 1;
 }
 
 .fileTreeLeaf {
