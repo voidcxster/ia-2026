@@ -1,4 +1,4 @@
-import { Card } from "./Card.tsx"
+import { Card } from "./ContentCard.tsx"
 import "./FileManager.css"
 
 export function FileManager() {
