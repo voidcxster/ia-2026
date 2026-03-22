@@ -29,6 +29,7 @@ export class FlashcardSet {
     }
 
     this.index++;
+    this.flippedToAns = false;
     return this.getCard().getQuestion();
   }
 
@@ -39,6 +40,7 @@ export class FlashcardSet {
     }
 
     this.index--;
+    this.flippedToAns = false;
     return this.getCard().getQuestion();
   }
 
