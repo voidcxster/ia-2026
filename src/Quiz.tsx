@@ -20,11 +20,29 @@ export function Quiz() {
   }
   
   const prevCard: MouseEventHandler = () => {
-    setFlashcardText(cardSetRef.current.prevCard())
+    try {
+      setFlashcardText(cardSetRef.current.prevCard())
+    } catch (e) {
+      // TODO: handle error
+      if (e instanceof RangeError) {
+        console.log(e.message)
+      } else {
+        console.error("Unknown error type :(")
+      }
+    }
   }
 
   const nextCard: MouseEventHandler = () => {
-    setFlashcardText(cardSetRef.current.nextCard())
+    try {
+      setFlashcardText(cardSetRef.current.nextCard())
+    } catch (e) {
+      // TODO: handle error
+      if (e instanceof RangeError) {
+        console.log(e.message)
+      } else {
+        console.error("Unknown error type :(")
+      }
+    }
   }
 
   return (
