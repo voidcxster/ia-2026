@@ -1,5 +1,6 @@
 import { Card } from './Card.tsx';
 
+// represents a set of flashcards
 export class FlashcardSet {
   private title: string;
   private cards: Card[];
@@ -58,5 +59,13 @@ export class FlashcardSet {
     } else {
       return this.getCard().getQuestion()
     }
+  }
+
+  getIndex(): number {
+    return this.index;
+  }
+
+  getLength(): number {
+    return this.cards.length;
   }
 }

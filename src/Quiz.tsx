@@ -1,49 +1,72 @@
 import "./Quiz.css"
 import "./FlashcardSet.tsx"
-import { useRef, useState, type MouseEventHandler } from "react";
+import { useEffect, useState, type MouseEventHandler } from "react";
 import { FlashcardSet } from './FlashcardSet.tsx'
-import { Card } from "./Card.tsx"
+import { useParams } from "react-router";
+import { readJSON, readCardSets } from "./FileManager.tsx"
+import * as Data from "./UserData.tsx"
 
+// contains the flash card and flipping functionality
 export function Quiz() {
-  const cardSetRef = useRef<FlashcardSet>(
-    new FlashcardSet("Test", [
-      new Card("What is 1 + 1?", "2"),
-      new Card("What is 1 * 1?", "1")
-    ])
-  );
-  const [flashcardText, setFlashcardText] = useState(
-    cardSetRef.current.getText()
-  );
+  const {quizID} = useParams<{quizID: string}>();
+  if (!quizID) {
+    return <div>Not found</div>;
+  }
+  console.log(quizID);
+
+  const [cardSetsData, setCardSetsData] = useState<Data.CardSetsData | null>(null);
+  const [flashcardText, setFlashcardText] = useState("");
+
+  const [cardSet, setCardSet] = useState<FlashcardSet | null>(null);
+  useEffect(() => {
+    (async () => {
+      //read JSON
+      const obj = await readJSON();
+      if (!obj) {
+        console.error("Invalid JSON");
+        return;
+      }
+
+      const c: Data.CardSetsData = readCardSets(obj);
+      setCardSetsData(c);
+
+      const set = c.get(quizID);
+      if (!set) return;
+
+      setCardSet(set);
+      setFlashcardText(set.getText());
+      setCardLength(set.getLength())
+    })();
+  }, [quizID])
+
+  const [cardIndex, setCardIndex] = useState(1);
+  const [cardLength, setCardLength] = useState(0);
+
 
   const flipCard: MouseEventHandler = () => {
-    setFlashcardText(cardSetRef.current.flipCard())
-  }
-  
+    if (!cardSet) return;
+    setFlashcardText(cardSet.flipCard());
+  };
+
   const prevCard: MouseEventHandler = () => {
+    if (!cardSet) return;
     try {
-      setFlashcardText(cardSetRef.current.prevCard())
+      setFlashcardText(cardSet.prevCard());
     } catch (e) {
-      // TODO: handle error
-      if (e instanceof RangeError) {
-        console.log(e.message)
-      } else {
-        console.error("Unknown error type :(")
-      }
+      if (e instanceof RangeError) console.log(e.message);
+      else console.log("Unknown Error type")
     }
-  }
+  };
 
   const nextCard: MouseEventHandler = () => {
+    if (!cardSet) return;
     try {
-      setFlashcardText(cardSetRef.current.nextCard())
+      setFlashcardText(cardSet.nextCard());
     } catch (e) {
-      // TODO: handle error
-      if (e instanceof RangeError) {
-        console.log(e.message)
-      } else {
-        console.error("Unknown error type :(")
-      }
+      if (e instanceof RangeError) console.log(e.message);
+      else console.log("Unknown Error type")
     }
-  }
+  };
 
   return (
     <div className="flexWrapper">
@@ -52,6 +75,7 @@ export function Quiz() {
         <h1 id="flashcardTitle">{flashcardText}</h1>
       </div>
       <div>
+        <span id="cardCountSpan">{`${cardIndex}/${cardLength}`}</span>
         <button onClick={prevCard}>Previous</button>
         <button onClick={nextCard}>Next</button>
       </div>

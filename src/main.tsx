@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import FileManager from './FileManager.tsx'
 import Quiz from "./Quiz.tsx"
 import './index.css'
+import Generator from "./Generator.tsx"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,8 +15,12 @@ createRoot(document.getElementById('root')!).render(
             element={<FileManager />}
           />
           <Route
-            path="/quiz"
+            path="/quiz/:quizID"
             element={<Quiz />}
+          />
+          <Route
+            path="/generator"
+            element={<Generator />}
           />
         </Routes>
       </BrowserRouter>

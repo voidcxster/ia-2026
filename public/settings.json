@@ -1,0 +1,61 @@
+{
+    "settings" : {
+        "darkMode": true
+    },
+    "folders": [
+        {
+            "title": "Spanish 300",
+            "contents": [ 
+                {
+                    "title": "test",
+                    "key": "key"
+                },
+                {
+                    "title": "Preterito",
+                    "contents": []
+                }
+            ]
+        },
+        {
+            "title": "Physics",
+            "contents": [
+
+            ]
+        },
+        {
+            "title": "testcards",
+            "key": "key2"
+        },
+        {
+            "title": "testuuid",
+            "key": "d750c98f-5ab2-41a3-9ea7-388e68588020"
+        }
+    ],
+    "cardSets": {
+        "key": {
+            "title": "test",
+            "cards": [ 
+                ["question", "answer"]
+            ]
+        },
+        "key2": {
+            "title": "testcards",
+            "cards": [
+                ["question2", "answer2"]
+            ]
+        },
+        "d750c98f-5ab2-41a3-9ea7-388e68588020": {
+            "title": "Spanish Numbers",
+            "cards": [
+                [
+                    "one",
+                    "uno"
+                ],
+                [
+                    "two",
+                    "dos"
+                ]
+            ]
+        }
+    }
+}

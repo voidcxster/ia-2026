@@ -1,6 +1,5 @@
 #root {
   /* max-width: 1080px; */
-  text-align: center;
   display: flex;
   flex-direction: row;
   width: 100vw;
@@ -23,7 +22,15 @@
   z-index: 1;
 }
 
-.fileTreeLeaf {
+#settingsLabel {
   text-align: left;
-  font-size: 20px;
+}
+
+#addCardsLink {
+  width: 100%;
+  text-align: center;
+  color: white;
+  position: absolute;
+  bottom: 40px;
+  left: 0px;
 }
