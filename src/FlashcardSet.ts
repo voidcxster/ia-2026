@@ -23,7 +23,7 @@ export class FlashcardSet {
   }
 
   nextCard(): string {
-    let len: number = this.cards.length;
+    const len: number = this.cards.length;
     //check if there are any cards are left
     if (this.index + 1 >= len) {
       throw new RangeError("No more cards are left. You've reached the end.")

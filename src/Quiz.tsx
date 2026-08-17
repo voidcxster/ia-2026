@@ -1,24 +1,26 @@
-import "./Quiz.css"
-import "./FlashcardSet.tsx"
+import "./Quiz.css";
 import { useEffect, useState, type MouseEventHandler } from "react";
-import { FlashcardSet } from './FlashcardSet.tsx'
 import { useParams } from "react-router";
-import { readJSON, readCardSets } from "./FileManager.tsx"
-import * as Data from "./UserData.tsx"
+import { readJSON } from "./IOUtils.ts";
+import * as Data from "./UserData.ts";
 
 // contains the flash card and flipping functionality
 export function Quiz() {
   const {quizID} = useParams<{quizID: string}>();
-  if (!quizID) {
-    return <div>Not found</div>;
-  }
-  console.log(quizID);
+  // if (!quizID) {
+  //   return <div>Not found</div>;
+  // }
+  // console.log(quizID);
 
-  const [cardSetsData, setCardSetsData] = useState<Data.CardSetsData | null>(null);
-  const [flashcardText, setFlashcardText] = useState("");
+  // const [cardSetsData, setCardSetsData] = useState<Data.CardSets | null>(null);
+  const [cardSet, setCardSet] = useState<Data.CardSet | null>(null);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
 
-  const [cardSet, setCardSet] = useState<FlashcardSet | null>(null);
+
   useEffect(() => {
+    let ignore = false;
+
     (async () => {
       //read JSON
       const obj = await readJSON();
@@ -27,44 +29,52 @@ export function Quiz() {
         return;
       }
 
-      const c: Data.CardSetsData = readCardSets(obj);
-      setCardSetsData(c);
+      if (!ignore) {
+        const c: Data.CardSets = obj.cardSets;
+        // setCardSetsData(c);
 
-      const set = c.get(quizID);
-      if (!set) return;
+        let set: Data.CardSet | undefined;
+        if (quizID && Object.hasOwn(c, quizID)) {
+          set = c[quizID];
+        }
 
-      setCardSet(set);
-      setFlashcardText(set.getText());
-      setCardLength(set.getLength())
+        if (set !== undefined) {
+          setCardSet(set);
+        }
+      }
     })();
+
+    return () => {
+      ignore = true;
+    }
   }, [quizID])
 
-  const [cardIndex, setCardIndex] = useState(1);
-  const [cardLength, setCardLength] = useState(0);
+  if (cardSet === null) return (
+    <h1>Error: Card set not found (check your key in the url!)</h1>
+  )
 
+  const cardSetLength = cardSet.cards.length;
+
+  function getCardText() {
+    if (cardSet)
+      return cardSet.cards[cardIndex][flipped ? 1 : 0];
+    else
+      return "";
+  }
 
   const flipCard: MouseEventHandler = () => {
-    if (!cardSet) return;
-    setFlashcardText(cardSet.flipCard());
+    setFlipped(!flipped);
   };
 
   const prevCard: MouseEventHandler = () => {
-    if (!cardSet) return;
-    try {
-      setFlashcardText(cardSet.prevCard());
-    } catch (e) {
-      if (e instanceof RangeError) console.log(e.message);
-      else console.log("Unknown Error type")
+    if (cardIndex > 0) {
+      setCardIndex(cardIndex - 1);
     }
   };
 
   const nextCard: MouseEventHandler = () => {
-    if (!cardSet) return;
-    try {
-      setFlashcardText(cardSet.nextCard());
-    } catch (e) {
-      if (e instanceof RangeError) console.log(e.message);
-      else console.log("Unknown Error type")
+    if (cardIndex < cardSetLength - 1) {
+      setCardIndex(cardIndex + 1)
     }
   };
 
@@ -72,10 +82,10 @@ export function Quiz() {
     <div className="flexWrapper">
       <h1 className="quizTitle">Spanish 300</h1>
       <div className="flashcard card" onClick={flipCard}>
-        <h1 id="flashcardTitle">{flashcardText}</h1>
+        <h1 id="flashcardTitle">{getCardText()}</h1>
       </div>
       <div>
-        <span id="cardCountSpan">{`${cardIndex}/${cardLength}`}</span>
+        <span id="cardCountSpan">{`${cardIndex + 1}/${cardSetLength}`}</span>
         <button onClick={prevCard}>Previous</button>
         <button onClick={nextCard}>Next</button>
       </div>
