@@ -1,5 +1,5 @@
-import type {Content, Folder} from "./UserData.tsx";
-import "./FileLeaf.css";
+import type {Content, Folder} from "@/types/UserData.ts";
+import "./FileLeaf.module.css";
 
 // recursive element representing files in the file tree
 export function FileLeaf({item, onClick}: {item: Folder, onClick: (folder: Content[]) => void}) {

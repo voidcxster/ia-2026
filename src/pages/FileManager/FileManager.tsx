@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { FileLeaf } from "./FileLeaf.tsx";
-import { ContentCard } from "./ContentCard.tsx";
+import { FileLeaf } from "@/components/FileLeaf/FileLeaf.tsx";
+import { ContentCard } from "../../components/ContentCard/ContentCard.tsx";
 import "./FileManager.css";
-import * as Data from "./UserData.ts";
+import * as Data from "../../types/UserData.ts";
 import { Link } from "react-router";
-import { readJSON } from "./IOUtils.ts";
+import { readJSON } from "@/utils/IOUtils.ts";
 
 // allows the user to view the folder structure and card sets
 export function FileManager() {
-  // const cards: string[] = ["Spanish 300", "Chemistry", "History HL", "Calculus 3/4", "Physics", "Computer Science", "Orchestra"]
-
   const [settingsData, setSettingsData] = useState<Data.Settings | null>(null);
   const [folders, setFolders] = useState<Data.Content[] | null>(null);
   // const [cardSetsData, setCardSetsData] = useState<Data.CardSets | null>(null);
