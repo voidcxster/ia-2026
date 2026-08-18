@@ -22,7 +22,21 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* aliases */
+    "baseUrl": ".",
+    "paths": {
+        "@/*": ["./src/*"],
+        "@assets/*": ["./src/assets/*"],
+        "@classes/*": ["./src/classes/*"],
+        "@components/*": ["./src/components/*"],
+        "@books/*": ["./src/books/*"],
+        "@icons/*": ["./src/icons/*"],
+        "@pages/*": ["./src/pages/*"],
+        "@models/*": ["./src/models/*"],
+        "@utils/*": ["./src/utils/*"],
+    }
   },
   "include": ["src"]
 }

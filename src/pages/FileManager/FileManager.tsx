@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { FileLeaf } from "@/components/FileLeaf/FileLeaf.tsx";
-import { ContentCard } from "../../components/ContentCard/ContentCard.tsx";
-import "./FileManager.css";
-import * as Data from "../../types/UserData.ts";
+import { FileLeaf } from "@components/FileLeaf/FileLeaf.tsx";
+import { ContentCard } from "@components/ContentCard/ContentCard.tsx";
+import styles from "./FileManager.module.css";
+import * as Data from "@models/UserData.ts";
 import { Link } from "react-router";
-import { readJSON } from "@/utils/IOUtils.ts";
+import { readJSON } from "@utils/IOUtils.ts";
 
 // allows the user to view the folder structure and card sets
 export function FileManager() {
@@ -15,8 +15,9 @@ export function FileManager() {
 
   useEffect(() => {
     console.log("useEffect");
+    let ignore = false;
+
     (async () => {
-      let ignore = false;
       const obj = await readJSON();
       if (!obj) {
         console.error("Invalid JSON");
@@ -33,11 +34,11 @@ export function FileManager() {
         // setCardSetsData(cardSets);
         setCurrentFolder(folders);
       }
-
-      return () => {
-        ignore = true
-      };
     })();
+
+    return () => {
+      ignore = true
+    };
   }, [])
 
   // const initializeSettings: ChangeEventHandler = async () => {
@@ -52,9 +53,9 @@ export function FileManager() {
 
   return (
     <>
-      <div id="fileTree">
+      <div className={styles.fileTree}>
         <ol>
-          <li className="fileTreeLeaf">
+          <li className={styles.fileTreeLeaf}>
             <span onClick={() => setCurrentFolder(folders)}>Home</span>
             <ol style={{paddingLeft:"20px"}}>
               {
@@ -64,7 +65,7 @@ export function FileManager() {
                     return <FileLeaf key={i} item={content as Data.Folder} onClick={(folder: Data.Content[]) => setCurrentFolder(folder)} />;
                   }
                   // <li
-                  // className="fileTreeLeaf"
+                  // className={styles.fileTreeLeaf}
                   // key={i}
                   // onClick={() => changeDirectory(/*url*/)}>
                   //   {
@@ -79,13 +80,13 @@ export function FileManager() {
             </ol>
           </li>
         </ol>
-        <Link to="/generator" id="addCardsLink">Add Cards</Link>
-        {/* <div id="settingsDiv">
-          <label id="settingsLabel" htmlFor="settings">Choose a settings file.</label>
-          <input type="file" name="settings" id="settings" onChange={initializeSettings} ref={fileInputRef}/>
+        <Link to="/generator" className={styles.addCardsLink}>Add Cards</Link>
+        {/* <div className={styles.settingsDiv}>
+          <label className={styles.settingsLabel} htmlFor="settings">Choose a settings file.</label>
+          <input type="file" name="settings" className={styles.settings} onChange={initializeSettings} ref={fileInputRef}/>
         </div> */}
       </div>
-      <div className="gridWrapper">
+      <div className={styles.gridWrapper}>
         {
           currentFolder && currentFolder.map((content, i) => {
             // check if content is folder (TODO: might refactor into custom typeguard later)

@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { createRoot } from 'react-dom/client'
-import FileManager from '@/pages/FileManager/FileManager.tsx';
-import Quiz from "@/pages/Quiz/Quiz.tsx"
+import FileManager from '@pages/FileManager/FileManager.tsx';
+import Quiz from "@pages/Quiz/Quiz.tsx"
 import './index.css'
-import Generator from "@/pages/Generator/Generator.tsx"
+import Generator from "@pages/Generator/Generator.tsx"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

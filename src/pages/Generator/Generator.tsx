@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Generator.css"
+import styles from "./Generator.module.css"
 
 // converts css into a json class
 export function Generator() {
@@ -28,10 +28,10 @@ ${cards}
   }
   return (
     <div style={{display:"flex",alignItems:"center", flexDirection:"column"}}>
-      <label htmlFor="title">Title:</label>
-      <input onChange={(e) => setTitle(e.target.value)} type="text" name="title" id="title" />
-      <label htmlFor="csv">Paste CSV:</label>
-      <textarea onChange={(e) => setCsvText(e.target.value)} name="csv" rows={10}></textarea>
+      <label htmlFor="title" className={styles.generatorLabel}>Title:</label>
+      <input onChange={(e) => setTitle(e.target.value)} type="text" name="title" id="title" className={styles.generatorInput}/>
+      <label htmlFor="csv" className={styles.generatorLabel}>Paste CSV:</label>
+      <textarea onChange={(e) => setCsvText(e.target.value)} className={styles.generatorTextArea} name="csv" rows={10}></textarea>
       <button onClick={convertToJSON}>Submit</button>
 
       <pre id="result">{result}</pre>

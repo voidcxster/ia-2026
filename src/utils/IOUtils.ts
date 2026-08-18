@@ -1,4 +1,4 @@
-import * as Data from "../types/UserData.ts";
+import * as Data from "@models/UserData.ts";
 // import { FlashcardSet } from "./FlashcardSet.ts";
 // import Card from "./Card.tsx";
 

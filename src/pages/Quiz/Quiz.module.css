@@ -1,3 +1,4 @@
+/* TODO: this is probably global unintentionally, possibly remove later and add another div */
 #root {
   display: block;
 }
@@ -22,6 +23,6 @@
   justify-content: center;
 }
 
-#flashcardTitle {
+.flashcardTitle {
   text-align: center;
 }

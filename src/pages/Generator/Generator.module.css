@@ -1,0 +1,7 @@
+.generatorLabel {
+  margin-right: 10px;
+}
+
+.generatorInput, .generatorTextArea {
+  width: 50%;
+}

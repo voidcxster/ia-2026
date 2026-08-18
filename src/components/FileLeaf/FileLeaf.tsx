@@ -1,10 +1,10 @@
-import type {Content, Folder} from "@/types/UserData.ts";
-import "./FileLeaf.module.css";
+import type {Content, Folder} from "@models/UserData.ts";
+import styles from "./FileLeaf.module.css";
 
 // recursive element representing files in the file tree
 export function FileLeaf({item, onClick}: {item: Folder, onClick: (folder: Content[]) => void}) {
   return (
-    <li className="fileTreeLeaf">
+    <li className={styles.fileTreeLeaf}>
       <span onClick={() => onClick(item.contents)}>{item.title}</span>
       <ol style={{paddingLeft:"20px"}}>
         {item.contents.map((child, i) => {

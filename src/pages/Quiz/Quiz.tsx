@@ -1,8 +1,8 @@
-import "./Quiz.css";
+import styles from "./Quiz.module.css";
 import { useEffect, useState, type MouseEventHandler } from "react";
 import { useParams } from "react-router";
-import { readJSON } from "@/utils/IOUtils.ts";
-import * as Data from "@/types/UserData.ts";
+import { readJSON } from "@utils/IOUtils.ts";
+import * as Data from "@models/UserData.ts";
 
 // contains the flash card and flipping functionality
 export function Quiz() {
@@ -79,10 +79,10 @@ export function Quiz() {
   };
 
   return (
-    <div className="flexWrapper">
-      <h1 className="quizTitle">Spanish 300</h1>
+    <div className={styles.flexWrapper}>
+      <h1 className={styles.quizTitle}>Spanish 300</h1>
       <div className="flashcard card" onClick={flipCard}>
-        <h1 id="flashcardTitle">{getCardText()}</h1>
+        <h1 className={styles.flashcardtitle}>{getCardText()}</h1>
       </div>
       <div>
         <span id="cardCountSpan">{`${cardIndex + 1}/${cardSetLength}`}</span>

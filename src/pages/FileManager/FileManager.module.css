@@ -12,7 +12,7 @@
   width: 85vw;
 }
 
-#fileTree {
+.fileTree {
   position: fixed;
   /* top: 0px;
   left: 0px; */
@@ -22,15 +22,22 @@
   z-index: 1;
 }
 
-#settingsLabel {
+.settingsLabel {
   text-align: left;
 }
 
-#addCardsLink {
+.addCardsLink {
   width: 100%;
   text-align: center;
   color: white;
   position: absolute;
   bottom: 40px;
   left: 0px;
+}
+
+/* TODO: maybe put into globals or separate .css file */
+.fileTreeLeaf {
+  text-align: left;
+  font-size: 20px;
+  list-style-type: none;
 }
