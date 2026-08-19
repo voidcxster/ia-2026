@@ -2,12 +2,15 @@ import { useState, type MouseEventHandler } from 'react';
 import styles from './ContentCard.module.css';
 // import { Ellipses } from './icons/Ellipses.tsx'
 import { useNavigate } from 'react-router';
+import type { Content } from "@models/UserData";
 
 // Component representing a file icon that could either be a card set or another
 // folder
-export function ContentCard({name, quizKey, onClick}: {name: string, quizKey?: string, onClick?: MouseEventHandler}) {
+export function ContentCard({content}: {content: Content}) {
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
+
+
   function redirect() {
     if (quizKey != null) {
       navigate(`quiz/${quizKey}`);
