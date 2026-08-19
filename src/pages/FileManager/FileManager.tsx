@@ -95,7 +95,7 @@ export function FileManager() {
               return (<ContentCard name={f.title} onClick={() => changeDirectory(f.contents)} key={i.toString()}/>);
             } else if (Object.hasOwn(content, "key")) {
               const c = content as Data.CardSetLink;
-              return (<ContentCard name={c.title} link={`/quiz/${c.key}`} key={i.toString()}/>);
+              return (<ContentCard name={c.title} quizKey={c.key} key={i.toString()}/>);
             } else {
               console.error("Something bad.")
             }

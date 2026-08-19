@@ -81,7 +81,7 @@ export function Quiz() {
   return (
     <div className={styles.flexWrapper}>
       <h1 className={styles.quizTitle}>Spanish 300</h1>
-      <div className="flashcard card" onClick={flipCard}>
+      <div className={`card ${styles.flashcard}`} onClick={flipCard}>
         <h1 className={styles.flashcardtitle}>{getCardText()}</h1>
       </div>
       <div>
