@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, type MouseEventHandler } from "react";
 import { FileLeaf } from "@components/FileLeaf/FileLeaf.tsx";
-import { ContentCard } from "@components/ContentCard/ContentCard.tsx";
+import { ContentCard, type ContentCardProps } from "@components/ContentCard/ContentCard.tsx";
 import styles from "./FileManager.module.css";
 import * as Data from "@models/UserData.ts";
 import { Link } from "react-router";
 import { readJSON } from "@utils/IOUtils.ts";
+import { useImmer } from "use-immer";
 
 // allows the user to view the folder structure and card sets
 export function FileManager() {
-  const [settingsData, setSettingsData] = useState<Data.Settings | null>(null);
-  const [folders, setFolders] = useState<Data.Content[] | null>(null);
-  // const [cardSetsData, setCardSetsData] = useState<Data.CardSets | null>(null);
-  const [currentFolder, setCurrentFolder] = useState<Data.Content[] | null>(null);
+  const [settingsData, updateSettingsData] = useImmer<Data.Settings | null>(null);
+  const [folders, updateFolders] = useImmer<Data.Content[] | null>(null);
+  // const [cardSetsData, updateCardSetsData] = useImmer<Data.CardSets | null>(null);
+  const [currentFolder, updateCurrentFolder] = useImmer<Data.Content[] | null>(null);
 
   useEffect(() => {
     console.log("useEffect");
@@ -29,10 +30,10 @@ export function FileManager() {
       console.log(cardSets);
 
       if (!ignore) {
-        setSettingsData(settings);
-        setFolders(folders);
-        // setCardSetsData(cardSets);
-        setCurrentFolder(folders);
+        updateSettingsData(settings);
+        updateFolders(folders);
+        // updateCardSetsData(cardSets);
+        updateCurrentFolder(folders);
       }
     })();
 
@@ -48,7 +49,7 @@ export function FileManager() {
   // }
 
   function changeDirectory(folder: Data.Content[]) {
-    setCurrentFolder(folder);
+    updateCurrentFolder(folder);
   }
 
   return (
@@ -56,13 +57,13 @@ export function FileManager() {
       <div className={styles.fileTree}>
         <ol>
           <li className={styles.fileTreeLeaf}>
-            <span onClick={() => setCurrentFolder(folders)}>Home</span>
+            <span onClick={() => updateCurrentFolder(folders)}>Home</span>
             <ol style={{paddingLeft:"20px"}}>
               {
                 folders && folders.map((content, i) => {
                   // check if content is folder (TODO: might refactor into custom typeguard later)
                   if (Object.hasOwn(content, "contents")) {
-                    return <FileLeaf key={i} item={content as Data.Folder} onClick={(folder: Data.Content[]) => setCurrentFolder(folder)} />;
+                    return <FileLeaf key={i} item={content as Data.Folder} onClick={(folder: Data.Content[]) => updateCurrentFolder(folder)} />;
                   }
                   // <li
                   // className={styles.fileTreeLeaf}
@@ -88,17 +89,22 @@ export function FileManager() {
       </div>
       <div className={styles.gridWrapper}>
         {
-          currentFolder && currentFolder.map((content, i) => {
+          currentFolder && currentFolder.map((content, i, arr) => {
+            let onClick: MouseEventHandler;
             // check if content is folder (TODO: might refactor into custom typeguard later)
             if (Object.hasOwn(content, "contents")) {
               const f = content as Data.Folder;
-              return (<ContentCard name={f.title} onClick={() => changeDirectory(f.contents)} key={i.toString()}/>);
-            } else if (Object.hasOwn(content, "key")) {
-              const c = content as Data.CardSetLink;
-              return (<ContentCard name={c.title} quizKey={c.key} key={i.toString()}/>);
-            } else {
-              console.error("Something bad.")
+              onClick = () => changeDirectory(f.contents);
+            } else { // content is cardsetlink
+              onClick = () => {
+                update //TODO: finish event handler
+              }
             }
+            const props: ContentCardProps = {
+              content,
+              onClick
+            };
+            return <ContentCard {...props} />;
           })
         }
       </div>

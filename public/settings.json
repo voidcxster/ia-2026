@@ -1,61 +1,72 @@
 {
-    "settings" : {
+    "settings": {
         "darkMode": true
     },
-    "folders": [
-        {
-            "title": "Spanish 300",
-            "contents": [ 
-                {
-                    "title": "test",
-                    "key": "key"
-                },
-                {
-                    "title": "Preterito",
-                    "contents": []
-                }
-            ]
-        },
-        {
-            "title": "Physics",
-            "contents": [
 
+    "folders": {
+        "spanish-300": {
+            "title": "Spanish 300",
+            "folders": [
+                "preterito"
+            ],
+            "cardSets": [
+                "key",
             ]
         },
-        {
-            "title": "testcards",
-            "key": "key2"
+
+        "physics": {
+            "title": "Physics",
+            "folders": [],
+            "cardSets": []
         },
-        {
-            "title": "testuuid",
-            "key": "d750c98f-5ab2-41a3-9ea7-388e68588020"
+
+        "preterito": {
+            "title": "Preterito",
+            "folders": [],
+            "cardSets": []
         }
-    ],
+    },
+
     "cardSets": {
         "key": {
             "title": "test",
-            "cards": [ 
-                ["question", "answer"]
+            "cards": [
+                {
+                    "question": "question",
+                    "answer": "answer"
+                }
             ]
         },
+
         "key2": {
             "title": "testcards",
             "cards": [
-                ["question2", "answer2"]
+                {
+                    "question": "question2",
+                    "answer": "answer2"
+                }
             ]
         },
+
         "d750c98f-5ab2-41a3-9ea7-388e68588020": {
             "title": "Spanish Numbers",
             "cards": [
-                [
-                    "one",
-                    "uno"
-                ],
-                [
-                    "two",
-                    "dos"
-                ]
+                {
+                    "question": "one",
+                    "answer": "uno"
+                },
+                {
+                    "question": "two",
+                    "answer": "dos"
+                }
             ]
         }
-    }
+    },
+
+    "root": [
+        "folder:spanish-300",
+        "folder:physics",
+        "cardSet:key2",
+        "cardSet:d750c98f-5ab2-41a3-9ea7-388e68588020"
+    ]
 }

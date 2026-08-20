@@ -13,10 +13,9 @@ interface IContent {
   imagePath: string;
   color: string;
   title: string;
+  key: string;
 }
-export interface CardSetLink extends IContent {
-  key: string
-}
+export interface CardSetLink extends IContent {}; 
 export type CardSets = { [key: string]: CardSet };
 export interface Config {
   settings: Settings;
