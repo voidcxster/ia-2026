@@ -1,18 +1,23 @@
-import type {Content, Folder} from "@models/UserData.ts";
+import type {FolderIcon, Folders} from "@models/UserData.ts";
 import styles from "./FileLeaf.module.css";
 
+interface FileLeafProps {
+  contentKey: string,
+  item: FolderIcon,
+  onClick: (fkey: string) => void,
+  folders: Folders
+}
+
 // recursive element representing files in the file tree
-export function FileLeaf({item, onClick}: {item: Folder, onClick: (folder: Content[]) => void}) {
+export function FileLeaf({contentKey, item, onClick, folders}: FileLeafProps) {
   return (
     <li className={styles.fileTreeLeaf}>
-      <span onClick={() => onClick(item.contents)}>{item.title}</span>
+      <span onClick={() => onClick(contentKey)}>{item.title}</span>
       <ol style={{paddingLeft:"20px"}}>
-        {item.contents.map((child, i) => {
+        {item.folders.map((key) => {
           // check if content is folder (TODO: might refactor into custom typeguard later)
-          if (Object.hasOwn(child, "contents")) {
-            const f = child as Folder;
-            return <FileLeaf key={i} item={f} onClick={onClick}/>;
-          }
+          const f = folders[key] as FolderIcon;
+          return <FileLeaf key={key} contentKey={key} item={f} onClick={onClick} folders={folders}/>;
         })}
       </ol>
     </li>

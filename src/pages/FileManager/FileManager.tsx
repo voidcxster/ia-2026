@@ -1,55 +1,125 @@
-import { useEffect, type MouseEventHandler } from "react";
+import { useEffect, useState, type MouseEventHandler } from "react";
 import { FileLeaf } from "@components/FileLeaf/FileLeaf.tsx";
-import { ContentCard, type ContentCardProps } from "@components/ContentCard/ContentCard.tsx";
+import { ContentCard, type ContentCardHandlers, type ContentCardProps } from "@components/ContentCard/ContentCard.tsx";
 import styles from "./FileManager.module.css";
-import * as Data from "@models/UserData.ts";
+import * as Data from"@models/UserData.ts";
 import { Link } from "react-router";
 import { readJSON } from "@utils/IOUtils.ts";
 import { useImmer } from "use-immer";
+import type { Draft } from "immer";
+import AddContent from "@components/AddContent/AddContent"
+
+//key that points to the root node in the folders data structure
+const ROOT_KEY = "(root)";
 
 // allows the user to view the folder structure and card sets
 export function FileManager() {
-  const [settingsData, updateSettingsData] = useImmer<Data.Settings | null>(null);
-  const [folders, updateFolders] = useImmer<Data.Content[] | null>(null);
+  const [config, updateConfig] = useImmer<Data.Config | null>(null);
+  // const [settingsData, updateSettingsData] = useImmer<Data.Settings | null>(null);
+  // const [folders, updateFolders] = useImmer<Data.Folders | null>(null);
   // const [cardSetsData, updateCardSetsData] = useImmer<Data.CardSets | null>(null);
-  const [currentFolder, updateCurrentFolder] = useImmer<Data.Content[] | null>(null);
+  const [currentFolderKey, updateCurrentFolderKey] = useImmer<string>(ROOT_KEY);
+  const [clipboard, setClipboard] = useState<string>("");
+  const [isCut, setIsCut] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("useEffect");
     let ignore = false;
 
     (async () => {
-      const obj = await readJSON();
-      if (!obj) {
+      const config = await readJSON();
+      if (!config) {
         console.error("Invalid JSON");
         return;
       }
-      const {settings, folders, cardSets} = obj;
-      console.log(settings)
-      console.log(folders)
-      console.log(cardSets);
+      // console.log(settings)
+      // console.log(folders)
+      // console.log(cardSets);
 
       if (!ignore) {
-        updateSettingsData(settings);
-        updateFolders(folders);
-        // updateCardSetsData(cardSets);
-        updateCurrentFolder(folders);
+        updateConfig(config);
       }
     })();
 
     return () => {
       ignore = true
     };
-  }, [])
+  }, [updateConfig])
 
-  // const initializeSettings: ChangeEventHandler = async () => {
-  //   const fileInput: HTMLInputElement = fileInputRef.current!;
-  //   const selectedFile = fileInput.files![0];
-  //   [settingsData, folderData, cardSetsData] = await readJSON(selectedFile);
-  // }
+  let settings: Data.Settings | null = null;
+  let folders: Data.Folders | null = null;
+  let cardSets: Data.CardSets | null = null;
+  let currentFolder: Data.Folder | null  = null;
+  let root: Data.Folder | null  = null;
 
-  function changeDirectory(folder: Data.Content[]) {
-    updateCurrentFolder(folder);
+  if (config != null) {
+    settings = config.settings;
+    folders = config.folders;
+    cardSets = config.cardSets;
+    root = folders[ROOT_KEY];
+    currentFolder = folders[currentFolderKey];
+  }
+
+  useEffect(() => {
+    if (settings == null) return;
+
+    document.documentElement.dataset.theme = settings.darkMode ? "dark" : "light";
+  }, [settings])
+
+  function changeDirectory(folderKey: string) {
+    updateCurrentFolderKey(folderKey);
+  }
+
+  function deleteFolder(draft: Draft<Data.Config>, key: string) {
+    const folder = draft.folders[key];
+
+    // delete child card sets
+    deleteCardSets(draft.cardSets, ...folder.cardSets);
+
+    deleteFolderReferences(draft.folders, key, ROOT_KEY);
+
+    // delete child folders recursively
+    folder.folders.forEach((fkey) => deleteFolder(draft, fkey));
+
+    // delete folder itself
+    delete draft.folders[key];
+  }
+
+  function deleteFolderReferences(draft: Draft<Data.Folders>, deleteKey: string, iterKey: string) {
+    // get folder
+    const folder = draft[iterKey];
+    // remove references to the deleted card set
+    let found = false;
+    folder.folders = folder.folders .filter(
+      (fkey) => {
+        if (deleteKey !== fkey) {
+          return true;
+        }
+        found = true;
+        return false;
+      });
+    // recursively delete references from children
+    if (!found) {
+      const folderKeys = folder.folders;
+      folderKeys.forEach((folderKey) => deleteFolderReferences(draft, folderKey, folderKey));
+    }
+  }
+
+  function deleteCardSets(draft: Draft<Data.CardSets>, ...keys: string[]) {
+    for (const key in keys) {
+      delete draft[key];
+    }
+  }
+
+  function deleteCardSetReferences(draft: Draft<Data.Folders>, folderKey: string, ...keys: string[]) {
+    // get folder
+    const folder = draft[folderKey];
+    // remove references to the deleted card set
+    folder.cardSets = folder.cardSets
+      .filter((ckey) => !keys.includes(ckey));
+    // recursively delete references from children
+    const folderKeys = folder.folders;
+    folderKeys.forEach((folderKey) => deleteCardSetReferences(draft, folderKey, ...keys));
   }
 
   return (
@@ -57,56 +127,103 @@ export function FileManager() {
       <div className={styles.fileTree}>
         <ol>
           <li className={styles.fileTreeLeaf}>
-            <span onClick={() => updateCurrentFolder(folders)}>Home</span>
+            <span onClick={() => updateCurrentFolderKey(ROOT_KEY)}>Home</span>
             <ol style={{paddingLeft:"20px"}}>
               {
-                folders && folders.map((content, i) => {
-                  // check if content is folder (TODO: might refactor into custom typeguard later)
-                  if (Object.hasOwn(content, "contents")) {
-                    return <FileLeaf key={i} item={content as Data.Folder} onClick={(folder: Data.Content[]) => updateCurrentFolder(folder)} />;
-                  }
-                  // <li
-                  // className={styles.fileTreeLeaf}
-                  // key={i}
-                  // onClick={() => changeDirectory(/*url*/)}>
-                  //   {
-                  //     content.getTitle()
-                  //     // Object.hasOwn(content, "title") ?
-                  //     // (content as Data.Folder).getTitle() :
-                  //     // cardSetsData?.get((content as CardSetLink).getKey().getTitle())
-                  //   }
-                  // </li>
+                root && root.folders.map((key) => {
+                  if (folders == null) return;
+                  const folder: Data.FolderIcon = folders[key] as Data.FolderIcon;
+                  return (
+                    <FileLeaf 
+                      key={key}
+                      contentKey={key}
+                      item={folder}
+                      onClick={(key) => changeDirectory(key)}
+                      folders={folders}
+                    />
+                  );
                 })
               }
             </ol>
           </li>
         </ol>
         <Link to="/generator" className={styles.addCardsLink}>Add Cards</Link>
-        {/* <div className={styles.settingsDiv}>
-          <label className={styles.settingsLabel} htmlFor="settings">Choose a settings file.</label>
-          <input type="file" name="settings" className={styles.settings} onChange={initializeSettings} ref={fileInputRef}/>
-        </div> */}
       </div>
       <div className={styles.gridWrapper}>
-        {
-          currentFolder && currentFolder.map((content, i, arr) => {
-            let onClick: MouseEventHandler;
-            // check if content is folder (TODO: might refactor into custom typeguard later)
-            if (Object.hasOwn(content, "contents")) {
-              const f = content as Data.Folder;
-              onClick = () => changeDirectory(f.contents);
-            } else { // content is cardsetlink
-              onClick = () => {
-                update //TODO: finish event handler
+        { // handle folders first
+          currentFolder && currentFolder.folders.map((key) => {
+            if (folders) {
+              const onClick: MouseEventHandler = () => changeDirectory(key);
+              const handlers: ContentCardHandlers = {
+                handleCopyClick: (e) => {
+                  e.stopPropagation();
+                  setClipboard(key);
+                },
+                handleCutClick: (e) => {
+                  e.stopPropagation();
+                  setClipboard(key);
+                  setIsCut(true);
+                },
+                handleDeleteClick: (e) => {
+                  e.stopPropagation();
+                  // remove content data
+                  updateConfig(draft => {
+                    if (draft == null) return;
+                    deleteFolder(draft, key);
+                  });
+                }
               }
+              const f = folders[key];
+              const props: ContentCardProps = {
+                content: f as Data.Content,
+                contentKey: key,
+                onClick,
+                handlers
+              };
+              return <ContentCard {...props} key={key}/>;
             }
-            const props: ContentCardProps = {
-              content,
-              onClick
-            };
-            return <ContentCard {...props} />;
           })
         }
+        { // handle cardsets
+          currentFolder && currentFolder.cardSets.map((key) => {
+            // check if content is folder (TODO: might refactor into custom typeguard later)
+            if (cardSets) {
+              const c = cardSets[key];
+              const handlers: ContentCardHandlers = {
+                handleCopyClick: (e) => {
+                  e.stopPropagation();
+                  setClipboard(key);
+                },
+                handleCutClick: (e) => {
+                  e.stopPropagation();
+                  setClipboard(key);
+                  setIsCut(true);
+                },
+                handleDeleteClick: (e) => {
+                  e.stopPropagation();
+                  // remove content data
+                  // delete the card set data
+                  updateConfig(draft => {
+                    if (draft == null) return;
+                      deleteCardSets(draft.cardSets, key);
+                  })
+                  // delete all references to the card set in root & folders
+                  updateConfig(draft => {
+                    if (draft == null || root == null) return;
+                      deleteCardSetReferences(draft.folders, ROOT_KEY, key);
+                  });
+                }
+              }
+              const props: ContentCardProps = {
+                content: c,
+                contentKey: key,
+                handlers
+              };
+              return <ContentCard {...props} key={key}/>;
+            }
+          })
+        }
+        <AddContent />
       </div>
     </>
   )

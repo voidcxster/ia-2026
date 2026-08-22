@@ -17,7 +17,7 @@
   /* top: 0px;
   left: 0px; */
   height: 100vh;
-  background: gray;
+  background: var(--sidebar-color);
   width: 15vw;
   z-index: 1;
 }
@@ -29,7 +29,7 @@
 .addCardsLink {
   width: 100%;
   text-align: center;
-  color: white;
+  color: var(--text-color);
   position: absolute;
   bottom: 40px;
   left: 0px;

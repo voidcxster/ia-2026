@@ -4,13 +4,23 @@
     },
 
     "folders": {
+        "(root)": {
+            "folders": [
+                "spanish-300",
+                "physics"
+            ],
+            "cardSets": [
+                "key2",
+                "d750c98f-5ab2-41a3-9ea7-388e68588020"
+            ]
+        },
         "spanish-300": {
             "title": "Spanish 300",
             "folders": [
                 "preterito"
             ],
             "cardSets": [
-                "key",
+                "key"
             ]
         },
 
@@ -61,12 +71,5 @@
                 }
             ]
         }
-    },
-
-    "root": [
-        "folder:spanish-300",
-        "folder:physics",
-        "cardSet:key2",
-        "cardSet:d750c98f-5ab2-41a3-9ea7-388e68588020"
-    ]
+    }
 }

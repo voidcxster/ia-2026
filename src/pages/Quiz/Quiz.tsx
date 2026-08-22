@@ -57,7 +57,7 @@ export function Quiz() {
 
   function getCardText() {
     if (cardSet)
-      return cardSet.cards[cardIndex][flipped ? 1 : 0];
+      return cardSet.cards[cardIndex][flipped ? "answer" : "question"];
     else
       return "";
   }

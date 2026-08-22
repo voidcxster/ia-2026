@@ -1,0 +1,8 @@
+.addContentCard {
+  font-size: 60px;
+  box-shadow: none;
+  background-color: var(--bg-color);
+  border-color: var(--element-1-color);
+  border-width: 7px;
+  border-style: dashed;
+}

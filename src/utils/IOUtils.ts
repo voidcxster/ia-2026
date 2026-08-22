@@ -2,7 +2,7 @@ import * as Data from "@models/UserData.ts";
 // import { FlashcardSet } from "./FlashcardSet.ts";
 // import Card from "./Card.tsx";
 
-export const readJSON = async () => {
+export const readJSON = async (): Promise<Data.Config | undefined> => {
   try {
     const response = await fetch("/settings.json");
     if (!response.ok) {
