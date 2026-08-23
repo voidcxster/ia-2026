@@ -1,14 +1,19 @@
 import { useState, type MouseEventHandler } from "react";
 import styles from "./AddContent.module.css";
-import type { Content } from "@/models/UserData";
+import type { Content } from "@models/UserData";
+import CreateContentDash from "@components/CreateContentDash/CreateContentDash";
 
 export interface AddContentProps {
   addContent: (content: Content) => void;
 }
 export default function AddContent({addContent}: AddContentProps) {
-  const [showDash, setShowDesh] = useState(false);
+  const [showDash, setShowDash] = useState(false);
   const handleClick: MouseEventHandler = () => {
-    
+    setShowDash(true);
+  }
+
+  function onClose() {
+    setShowDash(false);
   }
 
   return (
@@ -16,7 +21,7 @@ export default function AddContent({addContent}: AddContentProps) {
       <div className={`${styles.addContentCard} card contentCard`} onClick={handleClick}>
         <b>+</b>
       </div>
-      <CreateContentDash show={showDash} addContent={addContent} />
+      <CreateContentDash show={showDash} addContent={addContent} onClose={onClose} />
     </>
   )
 }
