@@ -19,17 +19,13 @@ export interface ContentCardHandlers {
 }
 export function ContentCard({content, contentKey, handlers, onClick}: ContentCardProps) {
   const navigate = useNavigate();
-  const [showPopup, setShowPopup] = useState(false);
 
+  const popupID = "popup-" + contentKey;
+  const popupAnchor = `--popup-anchor-${contentKey}`;
   if (onClick == null) {
     onClick = () => {
         navigate(`quiz/${contentKey}`);
     }
-  }
-
-  const handleEllipseClick: MouseEventHandler = (e) => {
-    e.stopPropagation();
-    setShowPopup(prev => !prev);
   }
 
   const handleOptionsClick: MouseEventHandler = (e) => {
@@ -41,11 +37,13 @@ export function ContentCard({content, contentKey, handlers, onClick}: ContentCar
     <div className={`card contentCard`} onClick={onClick}>
     {//<img src={ellipses} /* style={{ color:"red" }} */ className={styles.cardEllipseButton} alt="More options."/>
     }
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${styles.cardEllipseButton} lucide lucide-ellipsis-icon lucide-ellipsis`} onClick={handleEllipseClick}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      <button popoverTarget={popupID} popoverTargetAction="toggle" className={styles.cardEllipseButton} onClick={(e) => e.stopPropagation()}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-ellipsis-icon lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </button>
       <p className={styles.cardTitle}>{content.title}</p>
 
       {/* pop up menu*/}
-      <div className={`${styles.popupMenu} ${showPopup && styles.popupShow}`}>
+      <div className={styles.popupMenu} id={popupID} popover="auto">
         <button onClick={handlers.handleCopyClick} autoFocus>Copy</button>
         <button onClick={handlers.handleCutClick}>Cut</button>
         <button onClick={handlers.handleDeleteClick}>Delete</button>

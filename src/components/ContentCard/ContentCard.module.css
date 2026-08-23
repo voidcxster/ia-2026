@@ -7,26 +7,31 @@
   top: 32px;
   right: 32px;
   cursor: pointer;
+  aspect-ratio: 1 / 1;
+  background: transparent;
+  border-color: transparent;
+  border-radius: 10px;
+  color: var(--text-color);
+}
+
+.cardEllipseButton:hover {
+  background: var(--sidebar-color);
 }
 
 .popupMenu {
-  position: absolute;
-  right: 32px;
-  /* 32px margin from the edge of the card plus 12px to get to the middle of 
-   * the ellipses plus 32px margin from the ellipses */
-  top: 76px;
-  display: grid;
   padding: 8px;
+  border: none;
   border-radius: 8px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
   background: gray;
-  visibility: hidden;
+  position: absolute;
+  position-area: bottom span-left;
+}
+
+.popupMenu:popover-open {
+  display: grid;
 }
 
 .popupMenu button {
   
-}
-
-.popupShow {
-  visibility: visible;
 }
