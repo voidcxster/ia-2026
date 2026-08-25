@@ -3,14 +3,15 @@ import { FileLeaf } from "@components/FileLeaf/FileLeaf.tsx";
 import { ContentCard, type ContentCardHandlers, type ContentCardProps } from "@components/ContentCard/ContentCard.tsx";
 import styles from "./FileManager.module.css";
 import * as Data from"@models/UserData.ts";
-import { Link } from "react-router";
 import { readJSON } from "@utils/IOUtils.ts";
 import { useImmer } from "use-immer";
 import type { Draft } from "immer";
 import AddContent from "@components/AddContent/AddContent"
+import ClipboardUI from "@components/ClipboardUI/ClipboardUI";
 
 //key that points to the root node in the folders data structure
 const ROOT_KEY = "(root)";
+type ContentTypeString = "Card Set" | "Folder";
 
 // allows the user to view the folder structure and card sets
 export function FileManager() {
@@ -21,6 +22,7 @@ export function FileManager() {
   const [currentFolderKey, updateCurrentFolderKey] = useImmer<string>(ROOT_KEY);
   const [clipboard, setClipboard] = useState<string>("");
   const [isCut, setIsCut] = useState<boolean>(false);
+  const [clipType, setClipType] = useState<ContentTypeString | null>(null);
 
   useEffect(() => {
     console.log("useEffect");
@@ -51,6 +53,7 @@ export function FileManager() {
   let cardSets: Data.CardSets | null = null;
   let currentFolder: Data.Folder | null  = null;
   let root: Data.Folder | null  = null;
+  let clipTitle: string = "";
 
   if (config != null) {
     settings = config.settings;
@@ -58,6 +61,11 @@ export function FileManager() {
     cardSets = config.cardSets;
     root = folders[ROOT_KEY];
     currentFolder = folders[currentFolderKey];
+    if (clipType === "Folder") {
+      clipTitle = (folders[clipboard] as Data.FolderIcon).title;
+    } else if (clipType === "Card Set") {
+      clipTitle = cardSets[clipboard].title;
+    }
   }
 
   useEffect(() => {
@@ -122,6 +130,14 @@ export function FileManager() {
     folderKeys.forEach((folderKey) => deleteCardSetReferences(draft, folderKey, ...keys));
   }
 
+  const onPasteClick: MouseEventHandler = () => {
+    
+  }
+
+  function addContent(content: Data.Content) {
+    console.log(content); // TODO: finish function
+  }
+
   return (
     <>
       <div className={styles.fileTree}>
@@ -147,7 +163,14 @@ export function FileManager() {
             </ol>
           </li>
         </ol>
-        <Link to="/generator" className={styles.addCardsLink}>Add Cards</Link>
+        <ClipboardUI
+          contentKey={clipboard}
+          title={clipTitle}
+          type={clipType}
+          onPasteClick={onPasteClick}
+          isCut={isCut}
+        />
+        {/* <Link to="/generator" className={styles.addCardsLink}>Add Cards</Link> */}
       </div>
       <div className={styles.gridWrapper}>
         { // handle folders first
@@ -158,11 +181,13 @@ export function FileManager() {
                 handleCopyClick: (e) => {
                   e.stopPropagation();
                   setClipboard(key);
+                  setClipType("Folder");
                 },
                 handleCutClick: (e) => {
                   e.stopPropagation();
                   setClipboard(key);
                   setIsCut(true);
+                  setClipType("Folder");
                 },
                 handleDeleteClick: (e) => {
                   e.stopPropagation();
@@ -193,11 +218,13 @@ export function FileManager() {
                 handleCopyClick: (e) => {
                   e.stopPropagation();
                   setClipboard(key);
+                  setClipType("Card Set");
                 },
                 handleCutClick: (e) => {
                   e.stopPropagation();
                   setClipboard(key);
                   setIsCut(true);
+                  setClipType("Card Set");
                 },
                 handleDeleteClick: (e) => {
                   e.stopPropagation();
@@ -223,7 +250,7 @@ export function FileManager() {
             }
           })
         }
-        <AddContent />
+        <AddContent addContent={addContent} />
       </div>
     </>
   )

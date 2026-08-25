@@ -17,7 +17,7 @@
   /* top: 0px;
   left: 0px; */
   height: 100vh;
-  background: var(--sidebar-color);
+  background: var(--element-2-color);
   width: 15vw;
   z-index: 1;
 }

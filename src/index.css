@@ -7,14 +7,16 @@
     --text-color: white;
     --bg-color: #242424;
     --element-1-color: #353535;
-    --sidebar-color: dimgray;
+    --element-2-color: dimgray;
+    --element-3-color: lightgray;
   }
 
   :root[data-theme="light"] {
     --text-color: black;
     --bg-color: white;
     --element-1-color: #D4D4D4;
-    --sidebar-color: #B0B0B0;
+    --element-2-color: #B0B0B0;
+    --element-3-color: gray;
   }
 
   :root {

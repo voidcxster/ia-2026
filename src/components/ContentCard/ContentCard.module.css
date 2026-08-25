@@ -15,7 +15,7 @@
 }
 
 .cardEllipseButton:hover {
-  background: var(--sidebar-color);
+  background: var(--element-2-color);
 }
 
 .popupMenu {
@@ -23,7 +23,7 @@
   border: none;
   border-radius: 8px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
-  background: gray;
+  background: var(--element-2-color);
   position: absolute;
   position-area: bottom span-left;
 }
@@ -33,5 +33,18 @@
 }
 
 .popupMenu button {
-  
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-color);
+  border-bottom-color: white;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding: 10px;
+  font-family: inherit;
+}
+
+.popupMenu button:hover {
+  background-color: var(--element-3-color);
 }

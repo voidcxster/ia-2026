@@ -44,8 +44,8 @@ export function ContentCard({content, contentKey, handlers, onClick}: ContentCar
 
       {/* pop up menu*/}
       <div className={styles.popupMenu} id={popupID} popover="auto">
-        <button onClick={handlers.handleCopyClick} autoFocus>Copy</button>
-        <button onClick={handlers.handleCutClick}>Cut</button>
+        <button popoverTarget={popupID} popoverTargetAction="hide" onClick={handlers.handleCopyClick} autoFocus>Copy</button>
+        <button popoverTarget={popupID} popoverTargetAction="hide" onClick={handlers.handleCutClick}>Cut</button>
         <button onClick={handlers.handleDeleteClick}>Delete</button>
         <button onClick={handleOptionsClick}>More options...</button>
       </div>
